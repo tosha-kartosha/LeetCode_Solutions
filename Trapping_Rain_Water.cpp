@@ -1,3 +1,4 @@
+// Solution for B. PitCraft
 class Solution {
 public:
     int trap(vector<int>& height) {
