@@ -37,6 +37,47 @@ int main() {
     std::cout << cow << std::endl;
 }
 
+// Another solution with map
+/*class Solution {
+public:
+    string getHint(string secret, string guess) {
+        int bulls = 0, cows = 0;
+        std::map<char, int> possible_cows;
+        for (int i = 0; i < secret.size(); ++i) {
+            if (secret[i] == guess[i]) bulls++;
+            else possible_cows[secret[i]]++;
+        }
+        for (int i = 0; i < secret.size(); ++i) {
+            if (secret[i] != guess[i] && possible_cows[guess[i]] > 0) {
+                cows++;
+                possible_cows[guess[i]]--;
+            }
+        }
+        return std::to_string(bulls) + "A" + std::to_string(cows) + "B";
+    }
+};*/
+
+// Another solution with vector
+/*class Solution {
+public:
+    string getHint(string secret, string guess) {
+        int bulls = 0, cows = 0;
+        std::vector<int> ver1(10); // 10 cause digits from 0 to 9
+        std::vector<int> ver2(10);
+        for (int i = 0; i < secret.size(); ++i) {
+            if (secret[i] == guess[i]) bulls++;
+            else {
+                ver1[secret[i]-'0']++;
+                ver2[guess[i]-'0']++;
+            }
+        }
+        for (int i = 0; i < 10; ++i) {
+            cows+=min(ver1[i],ver2[i]);
+        }
+        return std::to_string(bulls) + "A" + std::to_string(cows) + "B";
+    }
+};*/
+
 /*n = input()
 n1 = input()
 bik = 0
