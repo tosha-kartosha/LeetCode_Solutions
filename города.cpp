@@ -4,7 +4,7 @@
  При этом улицы не соприкасаются, то есть не бывает Xi = Xi-1 + 1 и соответственно Yj = Yj-1 + 1 .
  Все дома в новом городе должны занимать одну клетку сетки. Причем все дома должны находиться рядом с улицами, а в клетках, не имеющих общих сторон с улицами, будет разбит парк. Кроме того, дома не должны находиться на наружной стороне крайних улиц.
  Теперь правительство Ректилании хочет знать, сколько домов будет построено в новом городе и сколько в нем будет клеток парка. Ваша задача состоит в том, чтобы написать программу, которая рассчитает эти величины.*/
-
+// не решает все тесты
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -85,6 +85,47 @@ int main() {
             A += ((map[i][1] - map[i][0] + 1)*(map[i][3] - map[i][2] + 1)- square);
         }
     }
+    std::cout << A << " " << B << " " << C << std::endl;
+    return 0;
+}
+// тоже не решает все тесты, но быстрее
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+
+int main() {
+    int M=0, N=0, V=0, H=0;
+    std::cin >> M >> N >> V >> H;
+    std::unordered_set<int> vertical_streets, horizontal_streets;
+    for (int i = 0, x; i < V; ++i) {
+        std::cin >> x;
+        vertical_streets.insert(x);
+    }
+    for (int i = 0, y; i < H; ++i) {
+        std::cin >> y;
+        horizontal_streets.insert(y);
+    }
+    
+    int A = 0;
+    int B = 0;
+    int C = V * N + H * M - V * H;
+
+    for (int i = 1; i <= M; ++i) {
+        for (int j = 1; j <= N; ++j) {
+            if (vertical_streets.count(j) || horizontal_streets.count(i)) {
+                continue;
+            }
+            bool near_street = false;
+            bool on_edge = (i == 1 || i == M || j == 1 || j == N);
+            if (i > 1 && horizontal_streets.count(i - 1)) near_street = true;
+            if (i < M && horizontal_streets.count(i + 1)) near_street = true;
+            if (j > 1 && vertical_streets.count(j - 1)) near_street = true;
+            if (j < N && vertical_streets.count(j + 1)) near_street = true;
+            if (near_street && !on_edge) A++;
+            else B++;
+        }
+    }
+
     std::cout << A << " " << B << " " << C << std::endl;
     return 0;
 }
