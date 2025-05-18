@@ -39,3 +39,57 @@ int main() {
     }
     return 0;
 }
+
+// 2 solution with getline
+#include <iostream>
+#include <vector>
+#include <unordered_set>
+int main() {
+    std::string s, word;
+    int max = 0, ind = 0;
+    std::unordered_set<std::string> dict;
+    std::vector<std::string> ans;
+    std::getline(std::cin, s);
+    int st = 0;
+    int pos = s.find(' ');
+    while (pos != std::string::npos) {
+        word = s.substr(st, pos-st);
+        max = (max < word.length() ? word.length() : max);
+        dict.insert(word);
+        st = pos+1;
+        pos = s.find(' ', st);
+    }
+    dict.insert(s.substr(st));
+    std::getline(std::cin, s);
+    st = 0;
+    pos = s.find(' ');
+    while (pos != std::string::npos) {
+        word = s.substr(st, pos-st);
+        ans.push_back(word);
+        for (int i = 0; i <= max; ++i) {
+            std::string subs = word.substr(0, i);
+            if (dict.find(subs) != dict.end()) {
+                ans[ind] = subs;
+                break;
+            }
+        }
+        st = pos+1;
+        pos = s.find(' ', st);
+        ind ++;
+    }
+    word = s.substr(st, pos-st);
+    ans.push_back(word);
+    for (int i = 0; i <= max; ++i) {
+        std::string subs = word.substr(0, i);
+        if (dict.find(subs) != dict.end()) {
+            ans[ind] = subs;
+            break;
+        }
+    }
+    st = pos+1;
+    pos = s.find(' ', st);
+    ind ++;
+    for (std::string elem : ans) {
+        std::cout << elem << " ";
+    }
+}
