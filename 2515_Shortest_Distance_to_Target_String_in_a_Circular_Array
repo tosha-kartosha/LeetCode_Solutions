@@ -1,0 +1,40 @@
+// You are given a 0-indexed circular string array words and a string target
+// Return the shortest distance needed to reach the string target, starting from startIndex
+
+class Solution {
+public:
+    int closestTarget(vector<string>& words, string target, int startIndex) {
+        int ans = -1;
+        int arr_size = words.size();
+        for (int i = startIndex; i < arr_size + startIndex; ++i) {
+            if (words[i % arr_size] == target) {
+                ans = i - startIndex;
+                break;
+            }
+        }
+        if (ans <= 0) {
+            return ans;
+        }
+        else if (ans == 1 || arr_size - ans == 1) {
+            return 1;
+        } else {
+            int tek_ans_ind = (startIndex + ans) % arr_size;
+            int bound = tek_ans_ind;
+            if (startIndex < tek_ans_ind) {
+                bound -= arr_size; 
+            }
+            for (int i = startIndex; i >= bound; --i) {
+                int ind = i;
+                if (i < 0) {
+                    ind = (arr_size + i) % arr_size;
+                }
+                if (words[ind] == target) {
+                    if (startIndex - i < ans) {
+                        return startIndex - i;
+                    }
+                }
+            }
+            return ans;
+        }
+    }
+};
